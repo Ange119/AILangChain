@@ -1,0 +1,43 @@
+#  AILangChain — Sistema RAG (Retrieval-Augmented Generation)
+
+Implementación práctica de un pipeline de **Retrieval-Augmented Generation (RAG)** desarrollado en Python utilizando **LangChain**, modelos de lenguaje de **OpenAI** (`gpt-4o-mini`) y búsqueda semántica mediante **embeddings**.
+
+Este proyecto demuestra cómo conectar un Large Language Model (LLM) con fuentes de datos externas y actualizadas para responder preguntas con precisión y mitigar las alucinaciones del modelo.
+
+---
+
+## Arquitectura del Pipeline
+
+El flujo del proyecto sigue las tres etapas fundamentales de un sistema RAG:
+
+1. **Indexación (*Indexing*):**
+   * Carga de documentos de texto plano mediante `Document` de `langchain_core`.
+   * Fragmentación inteligente (*Chunking*) utilizando `RecursiveCharacterTextSplitter` para respetar párrafos y mantener el contexto semántico dentro de la ventana de contexto del modelo.
+   * Generación de representaciones vectoriales (*Embeddings*) mediante `OpenAIEmbeddings`.
+2. **Recuperación (*Retrieval*):**
+   * Transformación de la consulta del usuario (*query*) a un vector numérico.
+   * Cálculo de similitud matemática mediante **producto punto** (`numpy.dot`) para identificar y extraer el fragmento de información más relevante.
+3. **Generación (*Generation*):**
+   * Construcción de un prompt estructurado con `ChatPromptTemplate` que inyecta el contexto recuperado junto con la pregunta original.
+   * Ejecución de una cadena declarativa (LCEL: `prompt | llm | output_parser`) para generar una respuesta precisa y fundamentada exclusivamente en los datos proporcionados.
+
+---
+
+##  Stack Tecnológico
+
+* **Lenguaje:** Python 3.10+
+* **Orquestación de IA:** LangChain (`langchain-core`, `langchain-openai`, `langchain-text-splitters`)
+* **Modelos:** OpenAI (`gpt-4o-mini` & `text-embedding-ada-002` / `text-embedding-3-small`)
+* **Procesamiento de Datos y Álgebra Lineal:** NumPy, Pandas
+* **Gestión de Configuración:** `python-dotenv`
+
+---
+
+##  Estructura del Proyecto
+
+```text
+AILangChain/
+├── .env                # Variables de entorno locales (no incluido en el repositorio)
+├── .gitignore          # Exclusión de credenciales, entorno virtual y caché
+├── main.py             # Script principal con el pipeline RAG completo
+└── README.md           # Documentación del proyecto
